@@ -22,17 +22,18 @@ pub fn solve(input: &str) -> Result<String> {
     let mut dial_position: i32 = 50;
     let mut at_zero_count = 0;
     for rotation in rotations.iter() {
-        println!("-");
-        println!("dial_position: {}", dial_position);
-        println!("rotation: {}", rotation);
+        let old_position = dial_position;
         dial_position += rotation;
 
-        at_zero_count += dial_position.div_euclid(100).abs();
-        dial_position = dial_position.rem_euclid(100);
+        let crossings = if *rotation >= 0 {
+            // R: count multiples of 100 in (old, new]
+            dial_position.div_euclid(100) - old_position.div_euclid(100)
+        } else {
+            // L: count multiples of 100 in [new, old)
+            (old_position - 1).div_euclid(100) - (dial_position - 1).div_euclid(100)
+        };
 
-        println!("dial is rotated {} to {}", rotation, dial_position);
-        println!("crossings: {}", dial_position.div_euclid(100).abs());
-        println!("at_zero_count: {}", at_zero_count);
+        at_zero_count += crossings;
     }
 
     Ok(at_zero_count.to_string())
