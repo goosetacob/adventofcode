@@ -1,0 +1,11 @@
+[package]
+name = "day01"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "day01"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = { workspace = true }
